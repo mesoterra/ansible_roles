@@ -1,0 +1,6 @@
+---
+  - name: "Shutting Down Server"
+    community.general.shutdown:
+#    ansible.builtin.shell:
+#      cmd: shutdown -h now
+#      executable: /bin/bash

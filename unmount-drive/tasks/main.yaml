@@ -1,0 +1,5 @@
+---
+  - name: "Mounting {{ drive_to_mount }}"
+    ansible.builtin.shell:
+      cmd: "umount {{ mount_location }}"
+    delegate_to: localhost

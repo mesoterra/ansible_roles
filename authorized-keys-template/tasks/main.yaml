@@ -1,0 +1,13 @@
+---
+  - name: Creating .ssh Directory
+    ansible.builtin.file:
+      path: /root/.ssh
+      state: directory
+      mode: '0700'
+  - name: Uploading authorized_keys File
+    ansible.builtin.copy:
+      src: '{{ role_path }}/files/authorized_keys'
+      dest: /root/.ssh/authorized_keys
+      owner: root
+      group: root
+      mode: '600'

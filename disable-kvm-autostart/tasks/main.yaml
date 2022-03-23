@@ -1,0 +1,6 @@
+---
+  - name: Disabling Autostart
+    community.libvirt.virt:
+      name: '{{ vm_name }}'
+      autostart: no
+    delegate_to: '{{ kvm_parent }}'

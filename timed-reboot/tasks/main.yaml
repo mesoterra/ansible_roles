@@ -1,0 +1,5 @@
+---
+  - name: Setting Timed Reboot
+    shell: "sleep {{ sleep_time }} ; reboot"
+    async: "{{ (sleep_time|int) + (300) }}"
+    poll: 0

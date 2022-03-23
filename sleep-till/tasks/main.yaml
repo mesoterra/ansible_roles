@@ -1,0 +1,12 @@
+---
+  - name: "Setting pre-{{ reboot_time }}am"
+    set_fact:
+      time_of_reboot: "{{ ansible_date_time.date }} {{ reboot_time }}"
+    when: ansible_date_time.hour < reboot_time
+  - name: Test combine
+    set_fact:
+      time_of_reboot: "{{ '%Y-%m-%d' | strftime(( ansible_date_time.epoch | int) + (86400)) }} {{ reboot_time }}"
+    when: ansible_date_time.hour > reboot_time
+  - name: how many seconds until
+    set_fact:
+      sleep_time: "{{ ((( time_of_reboot|to_datetime ).strftime('%s')|int) - (ansible_date_time.epoch | int)) }}"

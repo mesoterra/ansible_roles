@@ -1,0 +1,26 @@
+---
+  - name: "Installing Zabbix Agent"
+    pacman:
+      name: "zabbix-agent"
+      update_cache: yes
+
+  - name: "Implementing Zabbix Agent Config"
+    copy:
+      src: '{{ role_path }}/files/arch-zabbix_agentd.conf'
+      dest: /etc/zabbix/zabbix_agentd.conf
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: "Setting up files."
+    shell: "mkdir /var/log/zabbix/ ; touch /var/log/zabbix/zabbix_agentd.log ; chown -R zabbix-agent. /var/log/zabbix ; chmod 664 /var/log/zabbix/zabbix_agentd.log"
+    args:
+      executable: /bin/bash
+
+  - name: "Starting and Enabling Zabbix Agent"
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      masked: no
+      name: zabbix-agent

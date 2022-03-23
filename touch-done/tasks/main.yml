@@ -1,0 +1,8 @@
+---
+  - name: "Touching Done"
+    ansible.builtin.file:
+      path: /tmp/done.txt
+      owner: root
+      group: root
+      mode: '0600'
+      state: touch

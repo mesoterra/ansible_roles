@@ -1,0 +1,14 @@
+---
+  - name: "Opening TCP Port"
+    ansible.posix.firewalld:
+      port: "{{ port }}/tcp"
+      permanent: yes
+      state: enabled
+      immediate: yes
+
+  - name: "Opening UDP Port"
+    ansible.posix.firewalld:
+      port: "{{ port }}/udp"
+      permanent: yes
+      state: enabled
+      immediate: yes

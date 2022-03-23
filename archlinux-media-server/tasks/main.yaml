@@ -1,0 +1,69 @@
+---
+  - name: "Installing Media Server"
+    community.general.pacman:
+      name:
+        - emby-server
+        - nginx
+      state: present
+      update_cache: yes
+  - name: "Enabling Media Server"
+    ansible.builtin.service:
+      name: emby-server
+      state: started
+      enabled: yes
+  - name: "Configuring Web Server"
+    ansible.builtin.copy:
+      src: "{{ role_path }}/files/nginx.conf"
+      dest: /etc/nginx/nginx.conf
+      owner: root
+      group: root
+      mode: '0644'
+  - name: "Setting Up sites-avilable"
+    ansible.builtin.file:
+      path: /etc/nginx/sites-available
+      state: directory
+      owner: root
+      group: root
+      mode: '0755'
+  - name: "Setting Up sites-enabled"
+    ansible.builtin.file:
+      path: /etc/nginx/sites-enabled
+      state: directory
+      owner: root
+      group: root
+      mode: '0755'
+  - name: "Configuring Reverse Proxy"
+    ansible.builtin.copy:
+      src: "{{ role_path }}/files/emby-reverse-proxy.conf"
+      dest: /etc/nginx/sites-available/emby-reverse-proxy.conf
+      owner: root
+      group: root
+      mode: '0644'
+  - name: "Enabling Reverse Proxy"
+    ansible.builtin.file:
+      src: /etc/nginx/sites-available/emby-reverse-proxy.conf
+      dest: /etc/nginx/sites-enabled/emby-reverse-proxy.conf
+      owner: root
+      group: root
+      state: link
+  - name: "Starting Reverse Proxy Service"
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
+  - name: "Creating Samba Creds"
+    ansible.builtin.shell:
+      cmd: "echo 'username=SAMBAUSERNAMEHERE' > SAMBACREDSFILEHERE ; echo 'password={{ smbpw }}' >> SAMBACREDSFILEHERE"
+      executable: /bin/bash
+  - name: "Updating /etc/fstab"
+    ansible.builtin.shell:
+      cmd: "echo '//SAMBASHAREURL /mnt/media_files cifs vers=3.0,credentials=SAMBACREDSFILEHERE,uid=emby,gid=emby' >> /etc/fstab"
+      executable: /bin/bash
+  - name: "Making Mount point"
+    ansible.builtin.shell:
+      cmd: "mkdir /mnt/media_files"
+      executable: /bin/bash
+  - name: "Mounting Samba Share"
+    ansible.builtin.shell:
+      cmd: "mount /mnt/media_files"
+      executable: /bin/bash

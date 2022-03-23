@@ -1,0 +1,20 @@
+---
+  - name: "Opening TCP Port"
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: "{{ port }}"
+      ctstate: NEW
+      jump: ACCEPT
+      state: present
+      wait: 10
+
+  - name: "Opening UDP Port"
+    iptables:
+      chain: INPUT
+      protocol: udp
+      destination_port: "{{ port }}"
+      ctstate: NEW
+      jump: ACCEPT
+      state: present
+      wait: 10

@@ -1,0 +1,3 @@
+---
+  - name: "Running Zabbix Agent Installation"
+    include_tasks: "{{ ansible_os_family }}.yaml"

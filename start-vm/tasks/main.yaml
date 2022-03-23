@@ -1,0 +1,7 @@
+---
+  - name: Starting VM
+    community.libvirt.virt:
+      name: '{{ vm_name }}'
+      state: running
+      autostart: yes
+    delegate_to: '{{ kvm_parent }}'

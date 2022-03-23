@@ -1,0 +1,9 @@
+---
+  - name: Getting OS Facts
+    setup:
+    register: os_facts
+
+  - name: Setting Facts
+    set_fact:
+      print_output:
+        os_facts: "{{ ansible_os_family }}"
